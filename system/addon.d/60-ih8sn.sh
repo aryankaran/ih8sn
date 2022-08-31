@@ -12,7 +12,6 @@
 list_files() {
 cat <<EOF
 bin/ih8sn
-etc/ih8sn.conf
 etc/init/ih8sn.rc
 EOF
 }

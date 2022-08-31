@@ -21,26 +21,6 @@ void property_override(const std::vector<std::string> &props, char const value[]
     }
 }
 
-std::map<std::string, std::string> load_config() {
-    std::map<std::string, std::string> config;
-
-    if (std::ifstream file("/system/etc/ih8sn.conf"); file.good()) {
-        std::string line;
-
-        while (std::getline(file, line)) {
-            if (line[0] == '#') {
-                continue;
-            }
-
-            if (const auto separator = line.find('='); separator != std::string::npos) {
-                config[line.substr(0, separator)] = line.substr(separator + 1);
-            }
-        }
-    }
-
-    return config;
-}
-
 std::vector<std::string> property_list(const std::string &prefix, const std::string &suffix) {
     std::vector<std::string> props;
 
@@ -74,85 +54,20 @@ int main(int argc, char *argv[]) {
     const auto is_init_stage = strcmp(argv[1], "init") == 0;
     const auto is_boot_completed_stage = strcmp(argv[1], "boot_completed") == 0;
 
-    const auto config = load_config();
-    const auto build_fingerprint = config.find("BUILD_FINGERPRINT");
-    const auto build_description = config.find("BUILD_DESCRIPTION");
-    const auto build_security_patch_date = config.find("BUILD_SECURITY_PATCH_DATE");
-    const auto build_tags = config.find("BUILD_TAGS");
-    const auto build_type = config.find("BUILD_TYPE");
-    const auto build_version_release = config.find("BUILD_VERSION_RELEASE");
-    const auto build_version_release_or_codename = config.find("BUILD_VERSION_RELEASE_OR_CODENAME");
-    const auto debuggable = config.find("DEBUGGABLE");
-    const auto manufacturer_name = config.find("MANUFACTURER_NAME");
-    const auto override_avb = config.find("OVERRIDE_AVB");
-    const auto override_flash_lock = config.find("OVERRIDE_FLASH_LOCK");
-    const auto override_warranty = config.find("OVERRIDE_WARRANTY");
-    const auto product_name = config.find("PRODUCT_NAME");
-
-    if (is_init_stage && build_fingerprint != config.end()) {
-        property_override(property_list("ro.", "build.fingerprint"),
-                build_fingerprint->second.c_str());
+    if (is_init_stage) {
+        property_override(property_list("ro.", "build.fingerprint"), "Xiaomi/dipper/dipper:8.1.0/OPM1.171019.011/V9.5.5.0.OEAMIFA:user/release-keys");
+        property_override(property_list("ro.", "build.tags"), "release-keys");
+        property_override(property_list("ro.", "build.type"), "user");
+        property_override("ro.debuggable", "0");
     }
 
-    if (is_init_stage && build_tags != config.end()) {
-        property_override(property_list("ro.", "build.tags"), build_tags->second.c_str());
-    }
-
-    if (is_init_stage && build_type != config.end()) {
-        property_override(property_list("ro.", "build.type"), build_type->second.c_str());
-    }
-
-    if (is_boot_completed_stage && build_version_release != config.end()) {
-        property_override(property_list("ro.", "build.version.release"),
-                build_version_release->second.c_str());
-    }
-
-    if (is_boot_completed_stage && build_version_release_or_codename != config.end()) {
-        property_override(property_list("ro.", "build.version.release_or_codename"),
-                build_version_release_or_codename->second.c_str());
-    }
-
-    if (is_init_stage && build_description != config.end()) {
-        property_override("ro.build.description", build_description->second.c_str());
-    }
-
-    if (is_boot_completed_stage && build_security_patch_date != config.end()) {
-        property_override("ro.build.version.security_patch",
-                build_security_patch_date->second.c_str());
-    }
-
-    if (is_init_stage && debuggable != config.end()) {
-        property_override("ro.debuggable", debuggable->second.c_str());
-    }
-
-    if (is_init_stage && manufacturer_name != config.end()) {
-        property_override(property_list("ro.product.", "manufacturer"),
-                manufacturer_name->second.c_str());
-    }
-
-    if (is_init_stage && product_name != config.end()) {
-        property_override(property_list("ro.product.", "name"), product_name->second.c_str());
-    }
-
-    if (is_boot_completed_stage && override_avb != config.end()) {
-        if (strcmp(override_avb->second.c_str(), "1") == 0) {
-            property_override("ro.boot.vbmeta.device_state", "locked");
-            property_override("ro.boot.verifiedbootstate", "green");
-            property_override("ro.boot.veritymode", "enforcing");
-        }
-    }
-
-    if (is_boot_completed_stage && override_flash_lock != config.end()) {
-        if (strcmp(override_flash_lock->second.c_str(), "1") == 0) {
-            property_override("ro.boot.flash.locked", "1");
-        }
-    }
-
-    if (is_boot_completed_stage && override_warranty != config.end()) {
-        if (strcmp(override_warranty->second.c_str(), "1") == 0) {
-            property_override("ro.boot.warranty_bit", "0");
-            property_override("ro.warranty_bit", "0");
-        }
+    if (is_boot_completed_stage) {
+        property_override("ro.boot.flash.locked", "1");
+        property_override("ro.boot.vbmeta.device_state", "locked");
+        property_override("ro.boot.verifiedbootstate", "green");
+        property_override("ro.boot.veritymode", "enforcing");
+        property_override("ro.boot.warranty_bit", "0");
+        property_override("ro.warranty_bit", "0");
     }
 
     return 0;
