@@ -32,14 +32,14 @@ adb wait-for-device push system/addon.d/60-ih8sn.sh /system/addon.d/
 adb wait-for-device push system/bin/ih8sn /system/bin/
 adb wait-for-device push system/etc/init/ih8sn.rc /system/etc/init/
 
-DEVICE=$(adb shell getprop ro.product.device)
+MODEL=$(adb shell getprop ro.product.model)
 SERIALNO=$(adb shell getprop ro.boot.serialno)
 PRODUCT=$(adb shell getprop ro.build.product)
 
 if [[ -f "system/etc/ih8sn.conf.${SERIALNO}" ]]; then
     adb wait-for-device push system/etc/ih8sn.conf.${SERIALNO} /system/etc/ih8sn.conf
-elif [[ -f "system/etc/ih8sn.conf.${DEVICE}" ]]; then
-    adb wait-for-device push system/etc/ih8sn.conf.${DEVICE} /system/etc/ih8sn.conf
+elif [[ -f "system/etc/ih8sn.conf.${MODEL}" ]]; then
+    adb wait-for-device push system/etc/ih8sn.conf.${MODEL} /system/etc/ih8sn.conf
 elif [[ -f "system/etc/ih8sn.conf.${PRODUCT}" ]]; then
     adb wait-for-device push system/etc/ih8sn.conf.${PRODUCT} /system/etc/ih8sn.conf
 else
