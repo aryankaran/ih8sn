@@ -19,7 +19,7 @@ declare -A toolchain=(
 )
 
 if [ -z "$arch" ]; then
-    $folder/$0 armv7a
+#    $folder/$0 armv7a
     $folder/$0 aarch64
     $folder/$0 uninstall
     exit 0
