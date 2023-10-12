@@ -12,10 +12,10 @@ ndk_version=android-ndk-r25c
 nkd_download_link="https://dl.google.com/android/repository/$ndk_version-linux.zip"
 
 declare -A toolchain=(
-    ["armv7a"]="armv7a-linux-androideabi33-clang++"
+    ["armv7a"]="armv7a-linux-androideabi29-clang++"
     ["aarch64"]="aarch64-linux-android29-clang++"
-    ["i686"]="i686-linux-android33-clang++"
-    ["x86_64"]="x86_64-linux-android33-clang++"
+    ["i686"]="i686-linux-android29-clang++"
+    ["x86_64"]="x86_64-linux-android29-clang++"
 )
 
 if [ -z "$arch" ]; then
