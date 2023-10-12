@@ -31,7 +31,7 @@ fi
 if [ ! -d $ndk_version ]; then
     if [ ! -f $ndk_version-linux.zip ]; then
         echo "Downloading Android NDK"
-        wget -q --show-progress $nkd_download_link
+        wget -q $nkd_download_link
     fi
     echo "Extracting Android NDK"
     unzip -q $ndk_version-linux.zip
