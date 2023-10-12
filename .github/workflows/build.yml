@@ -24,5 +24,4 @@ jobs:
         title: "${{ env.GITHUB_SHA }}"
         files: |
           ih8sn-aarch64.zip
-          ih8sn-armv7a.zip
           ih8sn-uninstaller.zip
