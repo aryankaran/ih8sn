@@ -13,7 +13,7 @@ nkd_download_link="https://dl.google.com/android/repository/$ndk_version-linux.z
 
 declare -A toolchain=(
     ["armv7a"]="armv7a-linux-androideabi33-clang++"
-    ["aarch64"]="aarch64-linux-android33-clang++"
+    ["aarch64"]="aarch64-linux-android29-clang++"
     ["i686"]="i686-linux-android33-clang++"
     ["x86_64"]="x86_64-linux-android33-clang++"
 )
