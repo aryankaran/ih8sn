@@ -293,11 +293,11 @@ int main(int argc, char *argv[]) {
         char android_release[PROP_VALUE_MAX];
         __system_property_read(pi, nullptr, android_release);
         int android_version = std::atoi(android_release);
-        if (product != config.end() && android_version >= 12) {
+        if (product != config.end() && android_version >= 10) {
           std::string model = product->second + " ";
           property_override(property_list("ro.product.", "model"),
                             model.c_str());
-        } else if (android_version >= 12) {
+        } else if (android_version >= 10) {
           auto pi = (prop_info *)__system_property_find("ro.product.model");
           if (pi != nullptr) {
             char value[PROP_VALUE_MAX];
